@@ -1,7 +1,21 @@
 # Resume Analyzer
 
-This is a dummy README for the resume analyzer project.
+FastAPI backend + React (Vite) frontend. Currently scaffolding with a Gemini smoke-test endpoint.
 
-## Usage
+## Setup
 
-Coming soon.
+```bash
+# Backend
+cd backend
+python -m venv venv && source venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env   # then set GEMINI_API_KEY
+uvicorn main:app --reload
+
+# Frontend
+cd frontend
+npm install
+npm run dev
+```
+
+Backend: http://localhost:8000 (`GET /api/ping-gemini`), frontend: http://localhost:5173.
