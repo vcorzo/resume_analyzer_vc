@@ -2,7 +2,7 @@ import os
 
 import google.generativeai as genai
 
-MODEL_NAME = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+MODEL_NAME = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
 
 
 class GeminiError(Exception):
