@@ -1,6 +1,6 @@
 import os
 
-import google.generativeai as genai
+from google import genai
 
 MODEL_NAME = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
 
@@ -14,9 +14,10 @@ def ping_gemini() -> str:
     if not api_key:
         raise GeminiError("GEMINI_API_KEY is not set")
     try:
-        genai.configure(api_key=api_key)
-        model = genai.GenerativeModel(MODEL_NAME)
-        result = model.generate_content("Reply with a short friendly greeting.")
+        client = genai.Client(api_key=api_key)
+        result = client.models.generate_content(
+            model=MODEL_NAME, contents="Reply with a short friendly greeting."
+        )
         return result.text
     except Exception as exc:
         raise GeminiError(str(exc)) from exc
