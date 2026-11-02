@@ -8,3 +8,20 @@ export async function pingGemini() {
   }
   return body.response;
 }
+
+export async function analyzeResume(resumeFile, jdText) {
+  const form = new FormData();
+  form.append("resume", resumeFile);
+  form.append("jd_text", jdText);
+  const res = await fetch(`${API_BASE}/api/analyze`, { method: "POST", body: form });
+  let body = null;
+  try {
+    body = await res.json();
+  } catch {
+    // non-JSON error body
+  }
+  if (!res.ok) {
+    throw new Error(body?.detail || `Request failed (${res.status})`);
+  }
+  return body;
+}
