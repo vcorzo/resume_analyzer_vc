@@ -20,12 +20,12 @@ export default function PingGeminiButton() {
   }
 
   return (
-    <div>
-      <button onClick={handleClick} disabled={loading}>
+    <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
+      <button className="btn btn-ghost" onClick={handleClick} disabled={loading}>
         {loading ? "Pinging..." : "Ping Gemini"}
       </button>
-      {result && <p>{result}</p>}
-      {error && <p style={{ color: "crimson" }}>{error}</p>}
+      {result && <span>{result}</span>}
+      {error && <span style={{ color: "var(--low)" }}>{error}</span>}
     </div>
   );
 }

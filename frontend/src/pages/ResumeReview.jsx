@@ -3,6 +3,7 @@ import { analyzeResume } from "../api/client.js";
 import AnalysisForm from "../components/AnalysisForm.jsx";
 import AnalysisReport from "../components/AnalysisReport.jsx";
 import PingGeminiButton from "../components/PingGeminiButton.jsx";
+import { ReportEmpty, ReportLoading } from "../components/ReportPlaceholder.jsx";
 
 export default function ResumeReview() {
   const [loading, setLoading] = useState(false);
@@ -13,11 +14,11 @@ export default function ResumeReview() {
     setResult(null);
     setError(null);
     if (!file) {
-      setError("Please choose a resume file (.pdf or .md).");
+      setError("Choose a resume file (.pdf or .md) to continue.");
       return;
     }
     if (!jdText.trim()) {
-      setError("Please paste a job description.");
+      setError("Paste a job description to continue.");
       return;
     }
     setLoading(true);
@@ -31,13 +32,26 @@ export default function ResumeReview() {
   }
 
   return (
-    <main style={{ fontFamily: "sans-serif", padding: "2rem" }}>
-      <h1>Resume Analyzer</h1>
-      <AnalysisForm onSubmit={handleSubmit} loading={loading} />
-      {error && <p style={{ color: "crimson" }}>{error}</p>}
-      {result && <AnalysisReport result={result} />}
-      <hr style={{ margin: "2rem 0" }} />
-      <PingGeminiButton />
-    </main>
+    <div className="app">
+      <header className="app-header">
+        <h1>Resume Analyzer</h1>
+        <p>See how well your resume fits a job, and what to change to fit it better.</p>
+      </header>
+
+      <main className="layout">
+        <div className="sheet">
+          <AnalysisForm onSubmit={handleSubmit} loading={loading} />
+          {error && <p className="alert" role="alert" style={{ marginTop: "1rem" }}>{error}</p>}
+        </div>
+        <div className="sheet">
+          {loading ? <ReportLoading /> : result ? <AnalysisReport result={result} /> : <ReportEmpty />}
+        </div>
+      </main>
+
+      <footer className="app-footer">
+        <p>Connection check</p>
+        <PingGeminiButton />
+      </footer>
+    </div>
   );
 }

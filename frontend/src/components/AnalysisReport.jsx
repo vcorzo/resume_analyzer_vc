@@ -1,12 +1,31 @@
+import ScoreGauge from "./ScoreGauge.jsx";
+
+function getTier(score) {
+  if (score >= 75) return { cls: "tier-good", label: "Strong match" };
+  if (score >= 50) return { cls: "tier-mid", label: "Partial match" };
+  return { cls: "tier-low", label: "Weak match" };
+}
+
 export default function AnalysisReport({ result }) {
+  const tier = getTier(result.score);
   return (
-    <section>
-      <h2>Fitment score: {result.score}/100</h2>
-      <p>{result.summary}</p>
-      <h3>Recommendations</h3>
-      <ul>
+    <section className={tier.cls} aria-live="polite">
+      <div className="report-head">
+        <ScoreGauge score={result.score} />
+        <div>
+          <h2 className="verdict">{tier.label}</h2>
+          <p className="summary">{result.summary}</p>
+        </div>
+      </div>
+      <h3 className="recs-title">How to improve your match</h3>
+      <ul className="recs">
         {result.recommendations.map((rec, i) => (
-          <li key={i}>{rec}</li>
+          <li key={i}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="m5 12 5 5 9-10" />
+            </svg>
+            <span>{rec}</span>
+          </li>
         ))}
       </ul>
     </section>
