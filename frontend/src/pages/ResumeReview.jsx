@@ -3,6 +3,7 @@ import { analyzeResume } from "../api/client.js";
 import AnalysisForm from "../components/AnalysisForm.jsx";
 import AnalysisReport from "../components/AnalysisReport.jsx";
 import PingGeminiButton from "../components/PingGeminiButton.jsx";
+import { ReportEmpty, ReportLoading } from "../components/ReportPlaceholder.jsx";
 
 export default function ResumeReview() {
   const [loading, setLoading] = useState(false);
@@ -13,11 +14,11 @@ export default function ResumeReview() {
     setResult(null);
     setError(null);
     if (!file) {
-      setError("Please choose a resume file (.pdf or .md).");
+      setError("Choose a resume file (.pdf or .md) to continue.");
       return;
     }
     if (!jdText.trim()) {
-      setError("Please paste a job description.");
+      setError("Paste a job description to continue.");
       return;
     }
     setLoading(true);
@@ -31,13 +32,39 @@ export default function ResumeReview() {
   }
 
   return (
-    <main style={{ fontFamily: "sans-serif", padding: "2rem" }}>
-      <h1>Resume Analyzer</h1>
-      <AnalysisForm onSubmit={handleSubmit} loading={loading} />
-      {error && <p style={{ color: "crimson" }}>{error}</p>}
-      {result && <AnalysisReport result={result} />}
-      <hr style={{ margin: "2rem 0" }} />
-      <PingGeminiButton />
-    </main>
+    <div className="app">
+      <header className="app-header">
+        <div className="header-inner">
+          <div className="brand">
+            <span className="brand-mark" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+                <path d="m9 14 2 2 4-4" />
+              </svg>
+            </span>
+            Resume Analyzer
+          </div>
+          <h1>Know how well you fit before you apply</h1>
+          <p>Upload your resume, paste the job description, and get a fitment score with specific changes to make.</p>
+        </div>
+      </header>
+
+      <main className="app-main layout">
+        <div className="sheet">
+          <h2 className="sheet-title">Your application</h2>
+          <AnalysisForm onSubmit={handleSubmit} loading={loading} />
+          {error && <p className="alert" role="alert" style={{ marginTop: "1rem" }}>{error}</p>}
+        </div>
+        <div className="sheet">
+          <h2 className="sheet-title">Fitment report</h2>
+          {loading ? <ReportLoading /> : result ? <AnalysisReport result={result} /> : <ReportEmpty />}
+        </div>
+      </main>
+
+      <footer className="app-footer">
+        <p>Connection check</p>
+        <PingGeminiButton />
+      </footer>
+    </div>
   );
 }
