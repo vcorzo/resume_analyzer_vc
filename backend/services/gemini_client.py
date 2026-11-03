@@ -2,6 +2,7 @@ import json
 import os
 
 from google import genai
+from google.genai import types
 
 from models import AnalysisResult
 
@@ -44,12 +45,12 @@ def analyze_resume(resume_text: str, jd_text: str) -> AnalysisResult:
     if not api_key:
         raise GeminiError("GEMINI_API_KEY is not set")
     try:
-        genai.configure(api_key=api_key)
-        model = genai.GenerativeModel(
-            MODEL_NAME,
-            generation_config={"response_mime_type": "application/json"},
+        client = genai.Client(api_key=api_key)
+        result = client.models.generate_content(
+            model=MODEL_NAME,
+            contents=build_analysis_prompt(resume_text, jd_text),
+            config=types.GenerateContentConfig(response_mime_type="application/json"),
         )
-        result = model.generate_content(build_analysis_prompt(resume_text, jd_text))
         return AnalysisResult(**json.loads(result.text))
     except Exception as exc:
         raise GeminiError(str(exc)) from exc
