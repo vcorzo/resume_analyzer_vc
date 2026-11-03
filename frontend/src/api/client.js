@@ -25,3 +25,20 @@ export async function analyzeResume(resumeFile, jdText) {
   }
   return body;
 }
+
+async function getJson(path) {
+  const res = await fetch(`${API_BASE}${path}`);
+  let body = null;
+  try {
+    body = await res.json();
+  } catch {
+    // non-JSON error body
+  }
+  if (!res.ok) {
+    throw new Error(body?.detail || `Request failed (${res.status})`);
+  }
+  return body;
+}
+
+export const listAnalyses = () => getJson("/api/analyses");
+export const getAnalysis = (id) => getJson(`/api/analyses/${id}`);

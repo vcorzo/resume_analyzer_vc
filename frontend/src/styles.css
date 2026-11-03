@@ -202,3 +202,19 @@ textarea:focus { outline: 3px solid var(--accent); outline-offset: 1px; backgrou
   margin-left: -2px; border-radius: 2px; background: var(--ink); box-shadow: 0 0 0 3px #fff;
 }
 .scale-labels { display: flex; justify-content: space-between; margin-top: 0.4rem; font-size: 0.8rem; color: var(--ink-soft); }
+
+/* History */
+.column { display: grid; gap: 1.75rem; }
+.history { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.5rem; max-height: 22rem; overflow-y: auto; }
+.history-empty { margin: 0; color: var(--ink-soft); }
+.history-item {
+  width: 100%; display: flex; align-items: center; gap: 0.85rem; text-align: left;
+  font: inherit; color: inherit; cursor: pointer;
+  padding: 0.65rem 0.85rem; background: #f7f9fc; border: 1px solid var(--line); border-radius: 10px;
+}
+.history-item:hover { background: #eef0fc; }
+.history-item.is-active { border-color: var(--accent); background: #eef0fc; }
+.history-score { flex: none; min-width: 2.5rem; font-size: 1.35rem; font-weight: 800; letter-spacing: -0.03em; color: var(--accent); }
+.history-meta { display: grid; min-width: 0; }
+.history-name { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.history-meta time { font-size: 0.85rem; color: var(--ink-soft); }
