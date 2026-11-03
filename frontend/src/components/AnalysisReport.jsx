@@ -17,6 +17,12 @@ export default function AnalysisReport({ result }) {
           <p className="summary">{result.summary}</p>
         </div>
       </div>
+      <div className="scale" style={{ "--pos": `${result.score}%` }}>
+        <div className="scale-bar" />
+        <div className="scale-labels">
+          <span>0</span><span>50</span><span>75</span><span>100</span>
+        </div>
+      </div>
       <h3 className="recs-title">How to improve your match</h3>
       <ul className="recs">
         {result.recommendations.map((rec, i) => (
